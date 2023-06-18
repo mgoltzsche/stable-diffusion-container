@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: # kpt-merge: /blueprint
+  name: stable-diffusion # kpt-set: ${name}
+  annotations:
+    kubemate.mgoltzsche.github.com/nav-title: "Stable Diffusion" # kpt-set: ${title}
+    #kubemate.mgoltzsche.github.com/rewrite-target: /
+    internal.kpt.dev/upstream-identifier: 'networking.k8s.io|Ingress|default|blueprint'
+spec:
+  ingressClassName: kubemate
+  rules:
+  - http:
+      paths:
+      - path: /stable-diffusion/ # kpt-set: /${name}/
+        pathType: Prefix
+        backend:
+          service:
+            name: stable-diffusion # kpt-set: ${name}
+            port:
+              number: 8080 # kpt-set: ${port}
