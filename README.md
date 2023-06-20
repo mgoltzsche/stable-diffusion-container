@@ -1,28 +1,17 @@
-# webapp blueprint
+# stable-diffusion container
 
-kubemate web application blueprint based on the app blueprint.
+[stable-diffusion](https://github.com/CompVis/stable-diffusion) shipped as linux container.
 
 ## Usage
-Create a new application by fetching, configuring and rendering this [kpt](https://kpt.dev/) package.
 
-### Fetch the package
-To create a new application `myapp` using this package as a blueprint, run:
-```sh
-kpt pkg get https://github.com/mgoltzsche/kubemate-app-blueprints.git/packages/webapp[@VERSION] myapp
+Run the prebuilt container:
 ```
-
-or with `docker`:
-```sh
-docker run --rm -u `id -u` -e HOME=/tmp -v `pwd`:/data -w /data gcr.io/kpt-dev/kpt:v1.0.0-beta.25 pkg get https://github.com/mgoltzsche/kubemate-app-blueprints.git/packages/webapp myapp
+docker run --rm --privileged \
+	-v `pwd`/models:/stable-diffusion/models \
+	-v `pwd`/output:/output \
+	mgoltzsche/stable-diffusion \
+	--prompt "a photograph of an astronaut riding a horse" --plms --outdir /output
 ```
-
-See [`kpt pkg get` documentation](https://kpt.dev/reference/cli/pkg/get/).
-
-### Customize the package
-Within the fetched package's directory, edit [`setters.yaml`](./setters.yaml) to meet your requirements.
-To replace the corresponding values within the manifests and skaffold.yaml, call `make render` or rather [`kpt fn render`](https://kpt.dev/reference/cli/fn/render/).
-
-TL;DR: [Variant Constructor Pattern](https://kpt.dev/guides/variant-constructor-pattern)
 
 ## Development
 
